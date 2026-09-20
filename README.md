@@ -1,88 +1,59 @@
-<!--
-  This is your project's front page. Replace every placeholder below.
-  It is the first thing your instructor and any future employer will read, and
-  the live link in it is how your project gets opened for grading.
-
-  New here? Read START-HERE.md first. Delete this comment when you are done.
--->
-
 # SoLuna
 
-> One sentence: what this app does, and who it is for.
+> A private, shared space for couples to save, organize, and look back at their relationship memories together.
 
 **Live demo:** https://MaeGoose.github.io/SoLuna/ <!-- GitHub Pages is set up already; replace if you host elsewhere -->
-**Demo video:** `docs/demo.mp4` (link it here once it exists)
+**Demo video:** `docs/demo.mp4`
 **Course:** Applications Development and Emerging Technologies (6ADET), Holy Angel University
-**Author:** Your Name
-
-This repository lives in the author's own GitHub account and is public on
-purpose. There is no `student.json` here and there should not be one: see
-`docs/06-security-and-privacy.md` for what a public repo means for secrets and
-personal data.
+**Author:** Jacob Bernardo
 
 ---
 
 ## Screenshots
 
-Put two or three real screenshots at phone size in `docs/assets/`, then replace
-this paragraph with them:
+| Create Account |
+| --- |
+| ![Create Account](docs/assets/screen-create-account.png) |
 
-```markdown
-| Home | Detail | Add |
-| --- | --- | --- |
-| ![Home](docs/assets/screen-home.png) | ![Detail](docs/assets/screen-detail.png) | ![Add](docs/assets/screen-add.png) |
-```
 
-A repo without screenshots reads as abandoned, whatever the code says.
 
 ## What it does
 
-Three to five bullets. What can a user actually do?
+- Create a private account shared by two people (a couple).
+- Save relationship memories (photos, videos) organized into collections.
+- Revisit "On This Day" memories as a rearrangeable photo collage.
+- Manage the couple's profile, relationship status, and account settings.
 
-- ...
-- ...
-- ...
 
 ## Built with
 
 | | |
 | --- | --- |
 | Framework | Flutter (Dart) |
-| State | `setState` / provider / riverpod (say which) |
-| Storage | shared_preferences / Hive / Drift / Firebase / Supabase / other |
-| Other packages | list the ones that matter, with a word on why |
+| State | `setState` (local widget state)  |
+| Storage | Supabase  |
+| Other packages | `google_fonts` (Caveat + Quicksand), `device_preview` |
 
 ## Running it yourself
 
 ```bash
 flutter pub get
-cp .env.example .env      # only if your app needs keys, see below
 flutter run -d web-server --web-port 8080
 ```
 
-Then open http://localhost:8080. Requires Flutter (run `flutter --version` and
-put yours here).
+Then open http://localhost:8080. Requires Flutter 3.44.9
 
 ### Environment variables
 
-This project reads its configuration from a `.env` file that is **not** in the
-repository. Copy `.env.example`, fill in your own values, and never commit the
-result.
-
-| Variable | What it is | Where to get one |
-| --- | --- | --- |
-| `EXAMPLE_API_KEY` | ... | ... |
+Supabase
 
 ## Privacy and secrets
 
-Required section. Two or three honest sentences:
-
-- What personal data this app stores, if any, and where it goes.
-- Where the secrets live (`.env` locally, repository secrets in the deploy
-  workflow) and what protects the data on the service side (Firestore rules,
-  Supabase RLS, or "nothing leaves the device").
-- Confirm that all sample data, screenshots and the video contain **no real
-  personal information**.
+- The app currently stores no personal data anywhere the Create Account form
+  collects name/email/password/date of birth but only prints them to the
+  debug console (`debugPrint`); nothing is persisted or sent anywhere.
+- All screenshots and any sample data in this repo use placeholder
+  information, no real personal information.
 
 ## Project documentation
 
@@ -98,21 +69,27 @@ Required section. Two or three honest sentences:
 
 ## Status and what is next
 
-Be honest. What works, what is half done, what you would build next. An honest
-"known issues" section reads better than a claim the reader disproves in thirty
-seconds.
+**Works:** the Create Account screen — name/email/password/date-of-birth
+fields, a real date picker, password visibility toggle, and a themed sign-up
+button, all using the SoLuna design system (colors, type scale, spacing).
+
+**Half done / not started:** the other five screens (Today/On This Day, On
+This Day Expanded, Couple Dates, Couple Date Detail, Settings) exist only as
+designs, not code. Sign up and log in don't actually create or check an
+account — Supabase isn't connected. No automated tests beyond the default
+smoke test.
+
+**Next:** build the Today screen, then connect Supabase for real
+authentication and shared memory storage.
 
 ## Credits
 
-- Packages: see `pubspec.yaml`
-- Assets, icons, 3D models, sounds: name the author and the licence for each
-- People who helped, and how
+- Packages: see `pubspec.yaml`.
+- Assets, icons, 3D models, sounds: Google Fonts.
+- People who helped: 
 
 ## AI use
 
-If you used AI tools while building this, say so in a sentence or two and say
-where. Honest disclosure is the standard in this course and increasingly outside
-it.
 
 ## Licence
 
