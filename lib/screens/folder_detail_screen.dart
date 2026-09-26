@@ -21,8 +21,9 @@ class FolderDetailScreen extends StatefulWidget {
 }
 
 class _FolderDetailScreenState extends State<FolderDetailScreen> {
-  late List<Memory> _memories =
-      sampleMemories.where((m) => m.folderId == widget.folder.id).toList();
+  late final List<Memory> _memories = sampleMemories
+      .where((m) => m.folderId == widget.folder.id)
+      .toList();
 
   void _toggleFavorite(int index) {
     setState(() {
@@ -56,20 +57,27 @@ class _FolderDetailScreenState extends State<FolderDetailScreen> {
               ),
               Text(widget.folder.title, style: textTheme.headlineLarge),
               const SizedBox(height: 4),
-              Text('${widget.folder.itemCount} items', style: textTheme.labelSmall),
+              Text(
+                '${widget.folder.itemCount} items',
+                style: textTheme.labelSmall,
+              ),
               const SizedBox(height: AppSpacing.lg),
               Expanded(
                 child: _memories.isEmpty
                     ? Center(
-                        child: Text('Nothing saved here yet.', style: textTheme.bodyMedium),
+                        child: Text(
+                          'Nothing saved here yet.',
+                          style: textTheme.bodyMedium,
+                        ),
                       )
                     : GridView.builder(
                         itemCount: _memories.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: AppSpacing.sm,
-                          mainAxisSpacing: AppSpacing.sm,
-                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: AppSpacing.sm,
+                              mainAxisSpacing: AppSpacing.sm,
+                            ),
                         itemBuilder: (context, index) {
                           final memory = _memories[index];
                           return _GalleryThumbnail(
@@ -79,7 +87,8 @@ class _FolderDetailScreenState extends State<FolderDetailScreen> {
                               MaterialPageRoute(
                                 builder: (_) => MemoryPreviewScreen(
                                   memory: memory,
-                                  onFavoriteToggled: () => _toggleFavorite(index),
+                                  onFavoriteToggled: () =>
+                                      _toggleFavorite(index),
                                 ),
                               ),
                             ),

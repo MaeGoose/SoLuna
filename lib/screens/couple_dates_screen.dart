@@ -39,7 +39,7 @@ class CoupleDatesScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.text.withOpacity(0.06),
+                      color: AppColors.text.withValues(alpha: 0.06),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -67,7 +67,10 @@ class CoupleDatesScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Total Dates Saved', style: textTheme.labelSmall),
+                                Text(
+                                  'Total Dates Saved',
+                                  style: textTheme.labelSmall,
+                                ),
                                 Text(
                                   '${sampleCoupleDates.length} Magical Days',
                                   style: textTheme.headlineSmall,

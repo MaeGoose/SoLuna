@@ -9,7 +9,7 @@ import 'theme/app_theme.dart';
 // Flip this to true once device_preview is confirmed working again with
 // the new navigation. Left off for now to isolate a widget-tree assertion
 // error that appeared right after adding MainShell/IndexedStack.
-const bool _useDevicePreview = true;
+const bool _useDevicePreview = false;
 
 void main() {
   if (_useDevicePreview) {
