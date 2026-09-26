@@ -1,4 +1,4 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 /// Raw brand colors, straight from the design system palette.
 /// Material's ColorScheme only has room for a handful of named roles, so
