@@ -64,20 +64,25 @@ class _TodayScreenState extends State<TodayScreen> {
             const SizedBox(height: AppSpacing.xl),
             Text('Memory Collections', style: textTheme.headlineSmall),
             const SizedBox(height: AppSpacing.md),
-            Row(
-              children: [
-                for (final folder in sampleFolders) ...[
-                  CollectionFolderTile(
-                    title: folder.title,
-                    itemCount: folder.itemCount,
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => FolderDetailScreen(folder: folder)),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (final folder in sampleFolders) ...[
+                    CollectionFolderTile(
+                      title: folder.title,
+                      itemCount: sampleMemories
+                          .where((m) => m.folderId == folder.id)
+                          .length,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => FolderDetailScreen(folder: folder)),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: AppSpacing.lg),
+                    const SizedBox(width: AppSpacing.lg),
+                  ],
                 ],
-              ],
+              ),
             ),
           ],
         ),

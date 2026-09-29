@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/memory.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
+import 'memory_photo.dart';
 
 /// The featured "on this day" memory card: a photo placeholder, a title,
 /// a relative date, and a favorite toggle.
@@ -17,23 +18,12 @@ class MemoryCard extends StatelessWidget {
   final VoidCallback onFavoriteTap;
 
   static const _months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ];
 
   String get _dateLabel {
-    final formatted =
-        '${_months[memory.date.month - 1]} ${memory.date.day}, ${memory.date.year}';
+    final formatted = '${_months[memory.date.month - 1]} ${memory.date.day}, ${memory.date.year}';
     final years = DateTime.now().year - memory.date.year;
     if (years <= 0) return formatted;
     return '$formatted · $years year${years == 1 ? '' : 's'} ago';
@@ -49,7 +39,7 @@ class MemoryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.text.withValues(alpha: 0.06),
+            color: AppColors.text.withOpacity(0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -61,13 +51,8 @@ class MemoryCard extends StatelessWidget {
         children: [
           Container(
             height: 160,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [AppColors.secondary, AppColors.bgPeach],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
+            width: double.infinity,
+            child: MemoryPhoto(mediaUrl: memory.mediaUrl, localBytes: memory.localBytes),
           ),
           Padding(
             padding: const EdgeInsets.all(AppSpacing.md),

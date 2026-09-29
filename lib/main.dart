@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/create_account_screen.dart';
 import 'screens/main_shell.dart';
+import 'theme/app_scroll_behavior.dart';
 import 'theme/app_theme.dart';
 
 // Flip this to true once device_preview is confirmed working again with
@@ -36,6 +37,7 @@ class SoLunaApp extends StatelessWidget {
       title: 'SoLuna',
       debugShowCheckedModeBanner: false,
       theme: soLunaTheme,
+      scrollBehavior: AppScrollBehavior(),
       home: Builder(
         builder: (context) => CreateAccountScreen(
           onSubmit: (details) {

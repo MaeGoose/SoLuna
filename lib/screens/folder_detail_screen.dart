@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../data/sample_data.dart';
 import '../models/memory.dart';
 import '../models/memory_folder.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
+import '../widgets/memory_photo.dart';
 import 'memory_preview_screen.dart';
 
 /// Shown when tapping a "Memory Collections" folder on Today: a plain
@@ -21,9 +21,8 @@ class FolderDetailScreen extends StatefulWidget {
 }
 
 class _FolderDetailScreenState extends State<FolderDetailScreen> {
-  late final List<Memory> _memories = sampleMemories
-      .where((m) => m.folderId == widget.folder.id)
-      .toList();
+  late List<Memory> _memories =
+      sampleMemories.where((m) => m.folderId == widget.folder.id).toList();
 
   void _toggleFavorite(int index) {
     setState(() {
@@ -57,27 +56,20 @@ class _FolderDetailScreenState extends State<FolderDetailScreen> {
               ),
               Text(widget.folder.title, style: textTheme.headlineLarge),
               const SizedBox(height: 4),
-              Text(
-                '${widget.folder.itemCount} items',
-                style: textTheme.labelSmall,
-              ),
+              Text('${_memories.length} items', style: textTheme.labelSmall),
               const SizedBox(height: AppSpacing.lg),
               Expanded(
                 child: _memories.isEmpty
                     ? Center(
-                        child: Text(
-                          'Nothing saved here yet.',
-                          style: textTheme.bodyMedium,
-                        ),
+                        child: Text('Nothing saved here yet.', style: textTheme.bodyMedium),
                       )
                     : GridView.builder(
                         itemCount: _memories.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: AppSpacing.sm,
-                              mainAxisSpacing: AppSpacing.sm,
-                            ),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: AppSpacing.sm,
+                          mainAxisSpacing: AppSpacing.sm,
+                        ),
                         itemBuilder: (context, index) {
                           final memory = _memories[index];
                           return _GalleryThumbnail(
@@ -87,8 +79,7 @@ class _FolderDetailScreenState extends State<FolderDetailScreen> {
                               MaterialPageRoute(
                                 builder: (_) => MemoryPreviewScreen(
                                   memory: memory,
-                                  onFavoriteToggled: () =>
-                                      _toggleFavorite(index),
+                                  onFavoriteToggled: () => _toggleFavorite(index),
                                 ),
                               ),
                             ),
@@ -118,17 +109,10 @@ class _GalleryThumbnail extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: ClipRRect(
+            child: MemoryPhoto(
+              mediaUrl: memory.mediaUrl,
+              localBytes: memory.localBytes,
               borderRadius: BorderRadius.circular(12),
-              child: const DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppColors.secondary, AppColors.bgPeach],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-              ),
             ),
           ),
           if (memory.isFavorite)

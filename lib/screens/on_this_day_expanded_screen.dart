@@ -39,7 +39,12 @@ class OnThisDayExpandedScreen extends StatelessWidget {
                     runSpacing: AppSpacing.lg,
                     children: [
                       for (final memory in sampleMemories)
-                        PolaroidPhoto(caption: memory.title, width: 150),
+                        PolaroidPhoto(
+                          caption: memory.title,
+                          mediaUrl: memory.mediaUrl,
+                          localBytes: memory.localBytes,
+                          width: 150,
+                        ),
                     ],
                   ),
                 ),

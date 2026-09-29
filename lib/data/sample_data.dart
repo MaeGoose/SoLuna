@@ -23,9 +23,9 @@ final List<Memory> sampleMemories = [
 ];
 
 final List<MemoryFolder> sampleFolders = [
-  MemoryFolder(id: 'f1', title: 'First Meets', itemCount: 14),
-  MemoryFolder(id: 'f2', title: 'Sweet Notes', itemCount: 42),
-  MemoryFolder(id: 'f3', title: 'Concerts', itemCount: 12),
+  MemoryFolder(id: 'f1', title: 'First Meets'),
+  MemoryFolder(id: 'f2', title: 'Sweet Notes'),
+  MemoryFolder(id: 'f3', title: 'Concerts'),
 ];
 
 final List<CoupleDate> sampleCoupleDates = [

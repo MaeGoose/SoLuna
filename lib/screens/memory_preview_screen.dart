@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/memory.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
+import '../widgets/memory_photo.dart';
 
 /// Full-size preview of a single memory, opened by tapping a thumbnail in
 /// a folder's gallery grid.
@@ -71,17 +72,12 @@ class _MemoryPreviewScreenState extends State<MemoryPreviewScreen> {
                 ],
               ),
               Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [AppColors.secondary, AppColors.bgPeach],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: MemoryPhoto(
+                    mediaUrl: _memory.mediaUrl,
+                    localBytes: _memory.localBytes,
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),

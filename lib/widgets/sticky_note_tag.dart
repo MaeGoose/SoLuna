@@ -22,7 +22,7 @@ class StickyNoteTag extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: AppColors.text.withValues(alpha: 0.08),
+            color: AppColors.text.withOpacity(0.08),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),

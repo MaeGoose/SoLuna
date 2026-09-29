@@ -1,14 +1,26 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import 'memory_photo.dart';
 
-/// A polaroid-style photo card: a placeholder photo square with a
-/// handwritten-font caption underneath, used on Couple Date Detail and
+/// A polaroid-style photo card: a real photo if [mediaUrl] or
+/// [localBytes] is set (falling back to a placeholder otherwise), with a
+/// handwritten-font caption underneath. Used on Couple Date Detail and
 /// On This Day Expanded.
 class PolaroidPhoto extends StatelessWidget {
-  const PolaroidPhoto({super.key, required this.caption, this.width = 160});
+  const PolaroidPhoto({
+    super.key,
+    required this.caption,
+    this.mediaUrl,
+    this.localBytes,
+    this.width = 160,
+  });
 
   final String caption;
+  final String? mediaUrl;
+  final Uint8List? localBytes;
   final double width;
 
   @override
@@ -21,7 +33,7 @@ class PolaroidPhoto extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
           BoxShadow(
-            color: AppColors.text.withValues(alpha: 0.15),
+            color: AppColors.text.withOpacity(0.15),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -31,24 +43,17 @@ class PolaroidPhoto extends StatelessWidget {
         children: [
           AspectRatio(
             aspectRatio: 1,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppColors.bgPeach, AppColors.secondary],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(2),
-              ),
+            child: MemoryPhoto(
+              mediaUrl: mediaUrl,
+              localBytes: localBytes,
+              borderRadius: BorderRadius.circular(2),
             ),
           ),
           const SizedBox(height: 8),
           Text(
             caption,
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.headlineLarge?.copyWith(fontSize: 17),
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontSize: 17),
           ),
         ],
       ),
