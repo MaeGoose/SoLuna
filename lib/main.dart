@@ -1,5 +1,5 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/create_account_screen.dart';
@@ -13,7 +13,7 @@ void main() {
   if (_useDevicePreview) {
     runApp(
       DevicePreview(
-        enabled: !kReleaseMode,
+        enabled: true,
         builder: (context) => const SoLunaApp(),
       ),
     );
