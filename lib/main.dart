@@ -1,5 +1,5 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/create_account_screen.dart';
@@ -7,16 +7,14 @@ import 'screens/main_shell.dart';
 import 'theme/app_scroll_behavior.dart';
 import 'theme/app_theme.dart';
 
-// Flip this to true once device_preview is confirmed working again with
-// the new navigation. Left off for now to isolate a widget-tree assertion
-// error that appeared right after adding MainShell/IndexedStack.
-const bool _useDevicePreview = false;
+
+const bool _useDevicePreview = true;
 
 void main() {
   if (_useDevicePreview) {
     runApp(
       DevicePreview(
-        enabled: !kReleaseMode,
+        enabled: true,
         builder: (context) => const SoLunaApp(),
       ),
     );
@@ -41,17 +39,14 @@ class SoLunaApp extends StatelessWidget {
       home: Builder(
         builder: (context) => CreateAccountScreen(
           onSubmit: (details) {
-            // Wire this to Supabase later — for now just prove the data
-            // makes it out of the screen, then drop into the app on
-            // sample data.
+
             debugPrint('Sign up: ${details.name}, ${details.email}');
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const MainShell()),
             );
           },
           onLogInTap: () {
-            // No real accounts yet, so "log in" just goes to the same
-            // sample-data app for now.
+
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const MainShell()),
             );
