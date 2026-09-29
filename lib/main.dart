@@ -13,7 +13,7 @@ void main() {
   if (_useDevicePreview) {
     runApp(
       DevicePreview(
-        enabled: true,
+        enabled: !kReleaseMode,
         builder: (context) => const SoLunaApp(),
       ),
     );
