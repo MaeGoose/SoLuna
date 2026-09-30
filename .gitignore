@@ -1,30 +1,45 @@
-# Secrets: NEVER commit these. Add the line before you create the file.
-.env
-.env.*
-!.env.example
-env.json
-*.keystore
-*.jks
-serviceAccountKey.json
-google-services.json.bak
-
-# Flutter / Dart
-.dart_tool/
-.packages
-build/
-# Note: pubspec.lock IS committed for an app. It pins your exact package
-# versions so your build is the same on your laptop and on the CI runner.
-.flutter-plugins
-.flutter-plugins-dependencies
-*.iml
-
-# Raw video captures: compress into docs/ instead, GitHub blocks files over 100 MB
-*.mov
-raw-*.mp4
-
-# OS and editor
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
 .DS_Store
-Thumbs.db
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
 .idea/
-.vscode/*
-!.vscode/launch.json
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../widgets/app_button.dart';
 import '../widgets/labeled_text_field.dart';
+import 'auth_entry_screen.dart';
 
 /// Screen 6 of 6 — profile summary, relationship status, and account
-/// fields. Log Out is a stub until real auth exists.
+/// fields. Log Out actually signs out of Supabase now.
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -25,6 +27,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleLogOut() async {
+    await Supabase.instance.client.auth.signOut();
+    if (!mounted) return;
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const AuthEntryScreen()),
+      (route) => false,
+    );
   }
 
   @override
@@ -87,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               obscureText: true,
             ),
             const SizedBox(height: AppSpacing.xl),
-            AppButton(label: 'Log Out', onPressed: () {}),
+            AppButton(label: 'Log Out', onPressed: _handleLogOut),
           ],
         ),
       ),
