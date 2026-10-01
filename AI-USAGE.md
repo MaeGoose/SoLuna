@@ -1,12 +1,5 @@
 # AI usage
 
-This project was built with AI assistance. This file is the record of it. It is
-graded as the finals badge, and it is worth 100 points.
-
-Start it in week 1 and keep it up as you go. The commit history of this file is
-part of the evidence: a file written all at once the night before the deadline
-looks exactly like what it is.
-
 ## 1. How I used AI
 
 At least six entries. One per real use. Every entry needs a commit link.
@@ -19,13 +12,45 @@ At least six entries. One per real use. Every entry needs a commit link.
 - **What I kept, what I changed, and why:** Considering on how I worked on the login page first, I had to change some padding settings, change the box settings so that they don't go from one end to another of a screen and just be a proper rectangle. I added the colours, implemented google fonts and the such.
 - **Commit:** https://github.com/MaeGoose/SoLuna/commit/2ce97798e3f5050bb1751363cb425273108b1329
 
+### 2026-09-24 - 
+
+- **Tool:** Claude
+- **What I asked for:** I asked for help with creating the Main.shell for the other screens as I needed a proper nav bar that didnt follow the rest of the screens.
+- **What it gave back:** A working main.shell that worked throughout the screens. All 3 screens worked except the add one as its functionality wasn't done yet
+- **What I kept, what I changed, and why:** I kept most of the code as it was all straightforward and worked, although I edited it so that it had the "add" tab in future commits.
+- **Commit:** https://github.com/MaeGoose/SoLuna/commit/5c3aabbe2da78984ba4cdcd178401b7a00e39a5b
+
+### 2026-09-28 - 
+
+- **Tool:** Claude
+- **What I asked for:** I asked for how to properly add photos to folders properly, removing the current placeholders I have and making photo previews exist
+- **What it gave back:** It gave back more .dart files that did work but had a few problems with the photo preview as it shows only a part of it when its too big
+- **What I kept, what I changed, and why:** I changed the BoxFit.cover with a 'fit' option to make the whole photo actually seen (not in the commit as I fixed this much later)
+- **Commit:** https://github.com/MaeGoose/SoLuna/commit/8b885f8f09ebd53e72f50a42041b2b5334a559fb
+
 ### 2026-09-30 - 
 
 - **Tool:** Claude
-- **What I asked for:** 
+- **What I asked for:** I asked for help with how to implement a login function in my app itself with support from SUPABASE database.
+- **What it gave back:** It gave me honestly the basics and an SQL to base of off and to put into SUPABASE 
+- **What I kept, what I changed, and why:** There were some problems with the SUPABASE as it wasn't making the tables it was asking for so I ended up with errors in SUPABASE itself. I had to add a "drop policy if exists" so it wouldn't make an error anymore. 
+- **Commit:** https://github.com/MaeGoose/SoLuna/commit/fe72c2199dbfec638c39328c543145b445ea9075
+
+### 2026-10-1 - 
+
+- **Tool:** Claude 
+- **What I asked for:** I asked for a fix on the On this day as what I did just didn't follow what I wanted, it kept just showing the most latest additions to memories, showing the newest photos I added in the database
+- **What it gave back:** It made the On this day work as I wanted it to where it shows the photos where it matches the current Month and Day but REGARDLESS of year.
+- **What I kept, what I changed, and why:** I kept most of it but added a function where it shows all the photos in a little collage
+- **Commit:** https://github.com/MaeGoose/SoLuna/commit/645dee1b959312317bf6661fd92063b2cba1f8d1
+
+### 2026-09-30 - 
+
+- **Tool:** Claude
+- **What I asked for:** I asked for 
 - **What it gave back:** 
 - **What I kept, what I changed, and why:** 
-- **Commit:** https://github.com/MaeGoose/SoLuna/commit/2ce97798e3f5050bb1751363cb425273108b1329
+- **Commit:** 
 
 ## 2. Where the AI got it wrong
 
@@ -39,24 +64,32 @@ scores zero.
 - **What I did instead:** I fixed it so that it doesn't wrap around the whole screen. I added centre to the screen and a ConstrainedBox with a max width of 480 so that it centers. 
 - **Commit:** https://github.com/MaeGoose/SoLuna/commit/2ce97798e3f5050bb1751363cb425273108b1329
 
-### Case 2 - 
+### Case 2 - Settings tab suddenly disappearing after implementing  
+
+- **What it gave me:** It gave me the Supabase SQL and a connection to the settings tab with Supabase. 
+- **What was wrong with it:** After implementing Supabase and the joint account settings in the tab itself, it prevented it from showing up altogether. It had a line where the "Filled Button" Minimum size was "Size.fromHeight(48)" wherein it means an infinite width. So the FilledButton goes infinitely wide and crashes the whole layout
+- **What I did instead:** I fixed it with a minimum of width:90 and a minimumSize.
+- **Commit:** https://github.com/MaeGoose/SoLuna/commit/fe72c2199dbfec638c39328c543145b445ea9075
+
+### Case 3 - 
 
 - **What it gave me:**  
 - **What was wrong with it:** 
 - **What I did instead:** 
 - **Commit:** 
+
 ## 3. Who wrote what
 
 I worked on the blueprint that Claude gave me, I know just had to adjust and code what was needed based on my WireFrame and Mockups. Most of the App Themes, Colours, Margins, and Widgets were all pretty simple so most of those were done by me.
 
 ### Written by me
 
-- **File:** 
-- **Commit:**
+- **File:** main.dart, app_colors.dart, app_scroll_behavior.dart, app_spacing.dart, app_theme.dart
+- **Commit:** 
 - **What it does and why it is built this way:**
 
 ### The AI-written part I understand best
 
-- **File:**
+- **File:** 
 - **Commit:**
 - **What it does and why we kept it:**
