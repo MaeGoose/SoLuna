@@ -21,7 +21,7 @@ Future<void> main() async {
   if (_useDevicePreview) {
     runApp(
       DevicePreview(
-        enabled: !kReleaseMode,
+        enabled: true,
         builder: (context) => const SoLunaApp(),
       ),
     );
