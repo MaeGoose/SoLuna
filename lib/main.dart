@@ -20,10 +20,7 @@ Future<void> main() async {
 
   if (_useDevicePreview) {
     runApp(
-      DevicePreview(
-        enabled: !kReleaseMode,
-        builder: (context) => const SoLunaApp(),
-      ),
+      DevicePreview(enabled: true, builder: (context) => const SoLunaApp()),
     );
   } else {
     runApp(const SoLunaApp());
