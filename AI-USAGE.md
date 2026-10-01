@@ -19,6 +19,14 @@ At least six entries. One per real use. Every entry needs a commit link.
 - **What I kept, what I changed, and why:** Considering on how I worked on the login page first, I had to change some padding settings, change the box settings so that they don't go from one end to another of a screen and just be a proper rectangle. I added the colours, implemented google fonts and the such.
 - **Commit:** https://github.com/MaeGoose/SoLuna/commit/2ce97798e3f5050bb1751363cb425273108b1329
 
+### 2026-09-30 - 
+
+- **Tool:** Claude
+- **What I asked for:** 
+- **What it gave back:** 
+- **What I kept, what I changed, and why:** Considering on how I worked on the login page first, I had to change some padding settings, change the box settings so that they don't go from one end to another of a screen and just be a proper rectangle. I added the colours, implemented google fonts and the such.
+- **Commit:** https://github.com/MaeGoose/SoLuna/commit/2ce97798e3f5050bb1751363cb425273108b1329
+
 ## 2. Where the AI got it wrong
 
 Three cases. Be specific. If you write that the AI was never wrong, this section
