@@ -24,7 +24,7 @@ At least six entries. One per real use. Every entry needs a commit link.
 - **Tool:** Claude
 - **What I asked for:** 
 - **What it gave back:** 
-- **What I kept, what I changed, and why:** Considering on how I worked on the login page first, I had to change some padding settings, change the box settings so that they don't go from one end to another of a screen and just be a proper rectangle. I added the colours, implemented google fonts and the such.
+- **What I kept, what I changed, and why:** 
 - **Commit:** https://github.com/MaeGoose/SoLuna/commit/2ce97798e3f5050bb1751363cb425273108b1329
 
 ## 2. Where the AI got it wrong
@@ -39,13 +39,19 @@ scores zero.
 - **What I did instead:** I fixed it so that it doesn't wrap around the whole screen. I added centre to the screen and a ConstrainedBox with a max width of 480 so that it centers. 
 - **Commit:** https://github.com/MaeGoose/SoLuna/commit/2ce97798e3f5050bb1751363cb425273108b1329
 
+### Case 2 - 
+
+- **What it gave me:**  
+- **What was wrong with it:** 
+- **What I did instead:** 
+- **Commit:** 
 ## 3. Who wrote what
 
 I worked on the blueprint that Claude gave me, I know just had to adjust and code what was needed based on my WireFrame and Mockups. Most of the App Themes, Colours, Margins, and Widgets were all pretty simple so most of those were done by me.
 
 ### Written by me
 
-- **File:**
+- **File:** 
 - **Commit:**
 - **What it does and why it is built this way:**
 
