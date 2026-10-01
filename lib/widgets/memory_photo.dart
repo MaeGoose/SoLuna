@@ -11,11 +11,23 @@ import '../theme/app_colors.dart';
 /// showing real photos the moment either is set — nothing else has to
 /// change.
 class MemoryPhoto extends StatelessWidget {
-  const MemoryPhoto({super.key, this.mediaUrl, this.localBytes, this.borderRadius});
+  const MemoryPhoto({
+    super.key,
+    this.mediaUrl,
+    this.localBytes,
+    this.borderRadius,
+    this.fit = BoxFit.cover,
+  });
 
   final String? mediaUrl;
   final Uint8List? localBytes;
   final BorderRadius? borderRadius;
+
+  /// BoxFit.cover (the default) crops to fill — right for fixed-size
+  /// thumbnails (grid cells, cards, polaroids). Pass BoxFit.contain
+  /// wherever the whole photo actually needs to be visible, like the
+  /// full-size preview screen.
+  final BoxFit fit;
 
   static const _placeholder = DecoratedBox(
     decoration: BoxDecoration(
@@ -36,7 +48,7 @@ class MemoryPhoto extends StatelessWidget {
     if (bytes != null) {
       return ClipRRect(
         borderRadius: radius,
-        child: Image.memory(bytes, fit: BoxFit.cover),
+        child: Image.memory(bytes, fit: fit),
       );
     }
 
@@ -48,7 +60,7 @@ class MemoryPhoto extends StatelessWidget {
       borderRadius: radius,
       child: Image.network(
         url,
-        fit: BoxFit.cover,
+        fit: fit,
         // Falls back to the same placeholder if the URL 404s or is
         // unreachable, instead of showing Flutter's default broken-image
         // icon.

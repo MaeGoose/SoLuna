@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
 /// The two button looks used across SoLuna: a yellow primary CTA
-/// ("Sign up") and a green secondary action ("View Map").
+/// ("Save Memory") and a secondary action ("Add a Folder").
 enum AppButtonStyle { primary, secondary }
 
 /// A single button component used on every form and CTA in the app.

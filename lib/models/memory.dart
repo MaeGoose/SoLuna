@@ -1,8 +1,7 @@
 import 'dart:typed_data';
 
-/// A single saved photo/video memory. Sample data only for now — nothing
-/// here is persisted or fetched from a backend yet (see the project README
-/// for the Supabase plan).
+/// A single saved photo memory. Saved to Supabase — see
+/// MemoriesRepository for the actual reads/writes.
 class Memory {
   const Memory({
     required this.id,
@@ -23,16 +22,12 @@ class Memory {
   /// memories (like the Today feature) that aren't filed into a folder.
   final String? folderId;
 
-  /// Where the real photo lives (Supabase Storage, once that's wired up).
-  /// Null for now — every screen falls back to a gradient placeholder
-  /// via MemoryPhoto until this is actually set.
+  /// Where the photo actually lives — a public Supabase Storage URL.
   final String? mediaUrl;
 
-  /// A photo picked this session but not uploaded anywhere yet — shown
-  /// immediately via MemoryPhoto, but gone on restart since there's
-  /// nowhere durable to put it until Supabase Storage exists. Once
-  /// uploading is wired up, this gets replaced by a real [mediaUrl] and
-  /// can be dropped.
+  /// A photo picked this session but not uploaded yet — shown immediately
+  /// via MemoryPhoto while createMemory() is still uploading it. Not
+  /// persisted; once the upload finishes the real [mediaUrl] takes over.
   final Uint8List? localBytes;
 
   Memory copyWith({bool? isFavorite}) {

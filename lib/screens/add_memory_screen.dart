@@ -3,8 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../data/sample_data.dart';
-import '../models/memory.dart';
+import '../data/memories_repository.dart';
 import '../models/memory_folder.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
@@ -12,9 +11,10 @@ import '../widgets/app_button.dart';
 import '../widgets/labeled_text_field.dart';
 
 /// Form for adding a new memory, with a photo, and an option to file it
-/// into an existing folder or create a new one on the spot. Appends
-/// straight to the shared sample-data lists — there's no backend yet, so
-/// the picked photo is held in memory for this session only.
+/// into an existing folder or create a new one on the spot. Saving
+/// uploads the photo to Supabase Storage and writes the memories/
+/// memory_folders rows via MemoriesRepository — there's no local-only
+/// fallback anymore, so this needs a network connection to save.
 class AddMemoryScreen extends StatefulWidget {
   const AddMemoryScreen({super.key});
 
@@ -30,12 +30,35 @@ class _AddMemoryScreenState extends State<AddMemoryScreen> {
   DateTime? _date;
   String? _selectedFolderId;
   Uint8List? _photoBytes;
+  bool _isSaving = false;
+  bool _isLoadingFolders = true;
+  List<MemoryFolder> _folders = [];
 
   static const _newFolderSentinel = '__new__';
   static const _months = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFolders();
+  }
+
+  Future<void> _loadFolders() async {
+    try {
+      final folders = await MemoriesRepository.fetchFolders();
+      if (!mounted) return;
+      setState(() {
+        _folders = folders;
+        _isLoadingFolders = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _isLoadingFolders = false);
+    }
+  }
 
   @override
   void dispose() {
@@ -67,7 +90,7 @@ class _AddMemoryScreenState extends State<AddMemoryScreen> {
     });
   }
 
-  void _save() {
+  Future<void> _save() async {
     if (_photoBytes == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Pick a photo first.')),
@@ -80,35 +103,44 @@ class _AddMemoryScreenState extends State<AddMemoryScreen> {
       );
       return;
     }
-
-    String? folderId = _selectedFolderId;
-    if (folderId == _newFolderSentinel) {
-      final name = _newFolderController.text.trim();
-      if (name.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Name the new folder first.')),
-        );
-        return;
-      }
-      final newFolder = MemoryFolder(
-        id: 'f${DateTime.now().millisecondsSinceEpoch}',
-        title: name,
+    if (_selectedFolderId == _newFolderSentinel && _newFolderController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Name the new folder first.')),
       );
-      sampleFolders.add(newFolder);
-      folderId = newFolder.id;
+      return;
     }
 
-    sampleMemories.add(
-      Memory(
-        id: 'm${DateTime.now().millisecondsSinceEpoch}',
+    setState(() => _isSaving = true);
+    try {
+      final coupleId = await MemoriesRepository.getOrCreateCoupleId();
+
+      String? folderId = _selectedFolderId;
+      if (folderId == _newFolderSentinel) {
+        final newFolder = await MemoriesRepository.createFolder(
+          coupleId: coupleId,
+          title: _newFolderController.text.trim(),
+        );
+        folderId = newFolder.id;
+      }
+
+      await MemoriesRepository.createMemory(
+        coupleId: coupleId,
         title: _titleController.text.trim(),
         date: _date!,
         folderId: folderId,
-        localBytes: _photoBytes,
-      ),
-    );
+        photoBytes: _photoBytes!,
+      );
 
-    Navigator.pop(context, true);
+      if (!mounted) return;
+      Navigator.pop(context, true);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Couldn\'t save that memory. Try again.')),
+      );
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
+    }
   }
 
   @override
@@ -177,16 +209,17 @@ class _AddMemoryScreenState extends State<AddMemoryScreen> {
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
                 value: _selectedFolderId,
-                hint: const Text('No folder'),
+                hint: Text(_isLoadingFolders ? 'Loading folders...' : 'No folder'),
                 items: [
-                  for (final folder in sampleFolders)
+                  for (final folder in _folders)
                     DropdownMenuItem(value: folder.id, child: Text(folder.title)),
                   const DropdownMenuItem(
                     value: _newFolderSentinel,
                     child: Text('+ New folder'),
                   ),
                 ],
-                onChanged: (value) => setState(() => _selectedFolderId = value),
+                onChanged:
+                    _isLoadingFolders ? null : (value) => setState(() => _selectedFolderId = value),
               ),
               if (_selectedFolderId == _newFolderSentinel) ...[
                 const SizedBox(height: AppSpacing.md),
@@ -196,7 +229,10 @@ class _AddMemoryScreenState extends State<AddMemoryScreen> {
                 ),
               ],
               const SizedBox(height: AppSpacing.xl),
-              AppButton(label: 'Save Memory', onPressed: _save),
+              AppButton(
+                label: _isSaving ? 'Saving...' : 'Save Memory',
+                onPressed: _isSaving ? null : _save,
+              ),
             ],
           ),
         ),

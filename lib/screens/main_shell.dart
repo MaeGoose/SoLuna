@@ -8,7 +8,9 @@ import 'today_screen.dart';
 
 /// Hosts the three tab screens (Today, Dates, Settings) behind the shared
 /// bottom nav. "Add" opens a form and, if something was actually saved,
-/// refreshes the tabs so the new memory/date/folder shows up.
+/// bumps _refreshTick so Today remounts (fresh key) and re-fetches from
+/// Supabase — an IndexedStack keeps old State objects alive otherwise, so
+/// a plain setState() alone wouldn't re-run TodayScreen's initState().
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
 
@@ -18,6 +20,7 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int _navIndex = 0;
+  int _refreshTick = 0;
 
   // Nav index 2 ("Add") has no page of its own, so it's left out of this
   // map and handled as a pushed screen instead.
@@ -29,13 +32,8 @@ class _MainShellState extends State<MainShell> {
         context,
         MaterialPageRoute(builder: (_) => const AddEntryScreen()),
       );
-      // Not const below on purpose — these need to be fresh widget
-      // instances each rebuild so Flutter actually re-runs their build()
-      // methods and picks up whatever was just added to sample_data.dart.
-      // A const list here would be treated as identical to the last one
-      // and silently skipped.
       if (saved == true) {
-        setState(() {});
+        setState(() => _refreshTick++);
       }
       return;
     }
@@ -50,8 +48,8 @@ class _MainShellState extends State<MainShell> {
       body: IndexedStack(
         index: pageIndex,
         children: [
-          TodayScreen(),
-          CoupleDatesScreen(),
+          TodayScreen(key: ValueKey('today-$_refreshTick')),
+          CoupleDatesScreen(key: ValueKey('dates-$_refreshTick')),
           SettingsScreen(),
         ],
       ),

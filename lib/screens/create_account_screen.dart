@@ -22,22 +22,19 @@ class NewAccountDetails {
   final DateTime? dateOfBirth;
 }
 
-/// Screen 1 of 6 — sign-up and log-in share this screen. Owns its form
-/// state locally, including validation, and also owns the actual
-/// Supabase auth calls, since that's inherently screen-specific work, not
+/// Reached from LogInScreen via "Create one". Owns its form state
+/// locally, including validation, and also owns the actual Supabase
+/// auth calls, since that's inherently screen-specific work, not
 /// something worth routing through a caller-supplied callback.
 class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({
     super.key,
     required this.onSubmit,
-    required this.onLogInTap,
   });
 
-  /// Called after a successful sign-up (Supabase account actually created).
+  /// Called after a successful sign-up (Supabase account actually created
+  /// AND the profile row saved).
   final ValueChanged<NewAccountDetails> onSubmit;
-
-  /// Called after a successful log-in (Supabase session actually started).
-  final VoidCallback onLogInTap;
 
   @override
   State<CreateAccountScreen> createState() => _CreateAccountScreenState();
@@ -123,24 +120,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         _confirmPasswordError == null;
   }
 
-  /// Lighter validation for logging in — no name, no confirm password,
-  /// just enough to avoid firing an obviously-doomed request at Supabase.
-  bool _validateLogIn() {
-    final email = _emailController.text.trim();
-    final password = _passwordController.text;
-
-    setState(() {
-      _nameError = null;
-      _confirmPasswordError = null;
-      _emailError = email.isEmpty
-          ? 'Enter your email.'
-          : (!_emailPattern.hasMatch(email) ? 'That email doesn\'t look right.' : null);
-      _passwordError = password.isEmpty ? 'Enter your password.' : null;
-    });
-
-    return _emailError == null && _passwordError == null;
-  }
-
   Future<void> _handleSignUp() async {
     if (!_validateSignUp()) return;
 
@@ -149,7 +128,19 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
     setState(() => _isSubmitting = true);
     try {
-      await Supabase.instance.client.auth.signUp(email: email, password: password);
+      // name/date_of_birth ride along as user metadata. A Postgres trigger
+      // (see profiles table setup) copies them into public.profiles as
+      // soon as the auth.users row exists — so this works whether or not
+      // "Confirm email" is on, without this screen needing its own
+      // authenticated session to write the profile row itself.
+      await Supabase.instance.client.auth.signUp(
+        email: email,
+        password: password,
+        data: {
+          'name': _nameController.text.trim(),
+          if (_dateOfBirth != null) 'date_of_birth': _dateOfBirth!.toIso8601String(),
+        },
+      );
       if (!mounted) return;
       widget.onSubmit(
         NewAccountDetails(
@@ -159,27 +150,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           dateOfBirth: _dateOfBirth,
         ),
       );
-    } catch (e) {
-      if (mounted) _showError(e);
-    } finally {
-      if (mounted) setState(() => _isSubmitting = false);
-    }
-  }
-
-  Future<void> _handleLogIn() async {
-    if (!_validateLogIn()) return;
-
-    final email = _emailController.text.trim();
-    final password = _passwordController.text;
-
-    setState(() => _isSubmitting = true);
-    try {
-      await Supabase.instance.client.auth.signInWithPassword(
-        email: email,
-        password: password,
-      );
-      if (!mounted) return;
-      widget.onLogInTap();
     } catch (e) {
       if (mounted) _showError(e);
     } finally {
@@ -224,9 +194,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
-                            Text('Already Registered? ', style: textTheme.bodyMedium),
+                            Text('Already registered? ', style: textTheme.bodyMedium),
                             GestureDetector(
-                              onTap: _isSubmitting ? null : _handleLogIn,
+                              onTap: _isSubmitting
+                                  ? null
+                                  : () => Navigator.of(context).pop(),
                               child: Text(
                                 'Log in here',
                                 style: textTheme.bodyMedium?.copyWith(
