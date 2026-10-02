@@ -24,8 +24,7 @@ to non-members). Everything else is RLS-restricted to couple membership.
 
 - Values the app needs at run time: Supabase project URL, Supabase anon
   (public) key.
-- Where they live locally: `const` in `lib/main.dart` — not
-  `.env`. `.env.example`
+- Where they live locally: `const` in `lib/main.dart`
 - Where the deploy workflow gets them: it doesn't, since the key is
   already hardcoded.
 - What a visitor's deployed build carries, and why that's acceptable: the
