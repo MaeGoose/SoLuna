@@ -66,20 +66,6 @@ Supabase
 | [Demo video](docs/05-demo-video.md) | the recording and what it shows |
 | [Security and privacy](docs/06-security-and-privacy.md) | the checklist, filled in |
 
-## Status and what is next
-
-**Works:** the Create Account screen — name/email/password/date-of-birth
-fields, a real date picker, password visibility toggle, and a themed sign-up
-button, all using the SoLuna design system (colors, type scale, spacing).
-
-**Half done / not started:** the other five screens (Today/On This Day, On
-This Day Expanded, Couple Dates, Couple Date Detail, Settings) exist only as
-designs, not code. Sign up and log in don't actually create or check an
-account — Supabase isn't connected. No automated tests beyond the default
-smoke test.
-
-**Next:** build the Today screen, then connect Supabase for real
-authentication and shared memory storage.
 
 ## Credits
 
@@ -89,6 +75,7 @@ authentication and shared memory storage.
 
 ## AI use
 
+See [AI-USAGE.md](AI-USAGE.md)
 
 ## Licence
 
