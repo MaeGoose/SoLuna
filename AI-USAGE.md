@@ -2,8 +2,6 @@
 
 ## 1. How I used AI
 
-At least six entries. One per real use. Every entry needs a commit link.
-
 ### 2026-09-20 - Blueprint and Simple Layout
 
 - **Tool:** Claude
