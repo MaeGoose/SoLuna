@@ -45,9 +45,9 @@
 ### 2026-09-30 - 
 
 - **Tool:** Claude
-- **What I asked for:** I asked for 
-- **What it gave back:** 
-- **What I kept, what I changed, and why:** 
+- **What I asked for:** I asked for a simple rundown and things I could still improve on in the app itself.
+- **What it gave back:** It gave me a list of things to choose from from making the scroll function go down instead and making the accounts bubbles actually lead to settings. It also fixed a bug that wouldn't let status save
+- **What I kept, what I changed, and why:** I kept the 2 I mentioned above, although it gave me other suggestions, I thought that these were stretch goals already.
 - **Commit:** 
 
 ## 2. Where the AI got it wrong
@@ -69,7 +69,7 @@ scores zero.
 - **What I did instead:** I fixed it with a minimum of width:90 and a minimumSize.
 - **Commit:** https://github.com/MaeGoose/SoLuna/commit/fe72c2199dbfec638c39328c543145b445ea9075
 
-### Case 3 - 
+### Case 3 - Saving the Status not working
 
 - **What it gave me:**  
 - **What was wrong with it:** 
@@ -83,11 +83,11 @@ I worked on the blueprint that Claude gave me, I know just had to adjust and cod
 ### Written by me
 
 - **File:** main.dart, app_colors.dart, app_scroll_behavior.dart, app_spacing.dart, app_theme.dart
-- **Commit:** 
-- **What it does and why it is built this way:**
-
+- **Commit:** https://github.com/MaeGoose/SoLuna/commit/2ce97798e3f5050bb1751363cb425273108b1329
+- **What it does and why it is built this way:** Main.dart obviously is the one that runs everything here, it has all the packages, device preview and leads to the other screens with the AuthEntryScreen being the first one to show It also is the main one that has the Supabase URL and its anonymous key basically in charge of its connection to Supabase. With regards however to the other themes screen, I basically was in charge of making these on how I deemed fit, the spacing, the theme I wanted it to have the colours, and the fonts I chose were mostly done by me. I only merely followed the layouts of our past activities. 
+- 
 ### The AI-written part I understand best
 
-- **File:** 
-- **Commit:**
-- **What it does and why we kept it:**
+- **File:** main.shell 
+- **Commit:** https://github.com/MaeGoose/SoLuna/commit/5c3aabbe2da78984ba4cdcd178401b7a00e39a5b
+- **What it does and why we kept it:** I honestly had some difficulty when it came to fixing up the nav bar at the bottom, It just seems to keep following with the screens, hence I asked an AI to help me through it, it suggested instead that I make a main.shell and gave me an example template to use of off. I got it to work wherein all 4 tabs go across without affecting the nav bar whatsoever.
