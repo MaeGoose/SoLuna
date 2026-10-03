@@ -1,3 +1,5 @@
+[![Made with AI](https://img.shields.io/badge/Made_with-AI_assistance-blue)](AI-USAGE.md)
+
 # SoLuna
 
 > A private, shared space for couples to save, organize, and look back at their relationship memories together.
