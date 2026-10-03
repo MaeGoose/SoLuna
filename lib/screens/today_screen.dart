@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data/memories_repository.dart';
 import '../models/memory.dart';
@@ -20,7 +21,11 @@ import 'on_this_day_expanded_screen.dart';
 /// and shows an empty-state prompt for each section instead of sample
 /// data when nothing's been saved yet.
 class TodayScreen extends StatefulWidget {
-  const TodayScreen({super.key});
+  const TodayScreen({super.key, required this.onOpenSettings});
+
+  /// Tapping the avatars up top calls this — MainShell wires it to switch
+  /// the bottom nav to the Settings tab, same as tapping Settings there.
+  final VoidCallback onOpenSettings;
 
   @override
   State<TodayScreen> createState() => _TodayScreenState();
@@ -32,6 +37,8 @@ class _TodayScreenState extends State<TodayScreen> {
   List<MemoryFolder> _folders = [];
   List<Memory> _memories = [];
   String _searchQuery = '';
+  String _myInitial = '?';
+  String? _partnerInitial;
 
   static const _monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -74,9 +81,10 @@ class _TodayScreenState extends State<TodayScreen> {
       _loadError = null;
     });
     try {
-      await MemoriesRepository.getOrCreateCoupleId();
+      final coupleId = await MemoriesRepository.getOrCreateCoupleId();
       final folders = await MemoriesRepository.fetchFolders();
       final memories = await MemoriesRepository.fetchMemories();
+      await _loadAvatarInitials(coupleId);
       if (!mounted) return;
       setState(() {
         _folders = folders;
@@ -90,6 +98,39 @@ class _TodayScreenState extends State<TodayScreen> {
         _loadError = 'Couldn\'t load your memories.';
       });
     }
+  }
+
+  /// Pulls the current user's name (and their partner's, if linked) for
+  /// the top-right avatar initials — same profiles/couples lookup
+  /// Settings does, just reduced to a single letter each.
+  Future<void> _loadAvatarInitials(String coupleId) async {
+    final client = Supabase.instance.client;
+    final user = client.auth.currentUser;
+    if (user == null) return;
+
+    final myProfile = await client.from('profiles').select('name').eq('id', user.id).maybeSingle();
+    _myInitial = _initialFrom(myProfile?['name'] as String?) ?? _initialFrom(user.email) ?? '?';
+
+    final coupleRow =
+        await client.from('couples').select('user1_id, user2_id').eq('id', coupleId).maybeSingle();
+    final partnerId = coupleRow == null
+        ? null
+        : (coupleRow['user1_id'] == user.id
+            ? coupleRow['user2_id'] as String?
+            : coupleRow['user1_id'] as String?);
+
+    if (partnerId == null) {
+      _partnerInitial = null;
+      return;
+    }
+    final partnerProfile = await client.from('profiles').select('name').eq('id', partnerId).maybeSingle();
+    _partnerInitial = _initialFrom(partnerProfile?['name'] as String?);
+  }
+
+  String? _initialFrom(String? text) {
+    final trimmed = text?.trim();
+    if (trimmed == null || trimmed.isEmpty) return null;
+    return trimmed[0].toUpperCase();
   }
 
   /// Shared by the on-this-day cards and search results — both show
@@ -203,8 +244,12 @@ class _TodayScreenState extends State<TodayScreen> {
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 AvatarStack(
-                  avatarLabels: const ['J', 'A'],
+                  avatarLabels: [
+                    _myInitial,
+                    if (_partnerInitial != null) _partnerInitial!,
+                  ],
                   onFavoriteTap: () {},
+                  onAvatarsTap: widget.onOpenSettings,
                 ),
               ],
             ),
@@ -288,25 +333,27 @@ class _TodayScreenState extends State<TodayScreen> {
                   ),
                 )
               else
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for (final folder in _folders) ...[
-                        CollectionFolderTile(
-                          title: folder.title,
-                          itemCount: _memories.where((m) => m.folderId == folder.id).length,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => FolderDetailScreen(folder: folder)),
-                          ).then((changed) {
-                            if (changed == true) _load();
-                          }),
-                        ),
-                        const SizedBox(width: AppSpacing.lg),
-                      ],
-                    ],
-                  ),
+                // Wraps to new rows instead of scrolling sideways — the
+                // whole Today screen already scrolls vertically, so a
+                // long folder list just makes the page taller, same as
+                // everything else on it, rather than needing its own
+                // horizontal scroll that could run off-screen.
+                Wrap(
+                  spacing: AppSpacing.lg,
+                  runSpacing: AppSpacing.lg,
+                  children: [
+                    for (final folder in _folders)
+                      CollectionFolderTile(
+                        title: folder.title,
+                        itemCount: _memories.where((m) => m.folderId == folder.id).length,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => FolderDetailScreen(folder: folder)),
+                        ).then((changed) {
+                          if (changed == true) _load();
+                        }),
+                      ),
+                  ],
                 ),
             ],
           ],

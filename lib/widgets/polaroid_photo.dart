@@ -43,10 +43,21 @@ class PolaroidPhoto extends StatelessWidget {
         children: [
           AspectRatio(
             aspectRatio: 1,
-            child: MemoryPhoto(
-              mediaUrl: mediaUrl,
-              localBytes: localBytes,
-              borderRadius: BorderRadius.circular(2),
+            // The square frame is the classic polaroid look — kept as
+            // is — but BoxFit.contain (via a tinted backdrop) means the
+            // photo itself is never cropped to force that square, just
+            // letterboxed inside it.
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: AppColors.bgPeach,
+                borderRadius: BorderRadius.circular(2),
+              ),
+              child: MemoryPhoto(
+                mediaUrl: mediaUrl,
+                localBytes: localBytes,
+                borderRadius: BorderRadius.circular(2),
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           const SizedBox(height: 8),

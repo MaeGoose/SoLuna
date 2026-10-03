@@ -5,16 +5,19 @@ import '../theme/app_colors.dart';
 /// A favorites button plus a row of small overlapping avatar circles.
 /// Takes initials instead of real photo URLs for now, since there are no
 /// real user photos yet — swap for CircleAvatar(backgroundImage:...) once
-/// there are.
+/// there are. Tapping the avatars (not the heart) calls [onAvatarsTap] —
+/// Today uses this to jump to Settings.
 class AvatarStack extends StatelessWidget {
   const AvatarStack({
     super.key,
     required this.avatarLabels,
     required this.onFavoriteTap,
+    required this.onAvatarsTap,
   });
 
   final List<String> avatarLabels;
   final VoidCallback onFavoriteTap;
+  final VoidCallback onAvatarsTap;
 
   static const _colors = [AppColors.primary, AppColors.secondary];
 
@@ -37,30 +40,39 @@ class AvatarStack extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        for (var i = 0; i < avatarLabels.length; i++)
-          Transform.translate(
-            offset: Offset(i == 0 ? 0 : -10, 0),
-            child: Container(
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.fromBorderSide(
-                  BorderSide(color: AppColors.surface, width: 2),
-                ),
-              ),
-              child: CircleAvatar(
-                radius: 18,
-                backgroundColor: _colors[i % _colors.length],
-                child: Text(
-                  avatarLabels[i],
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
+        InkWell(
+          onTap: onAvatarsTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var i = 0; i < avatarLabels.length; i++)
+                Transform.translate(
+                  offset: Offset(i == 0 ? 0 : -10, 0),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.fromBorderSide(
+                        BorderSide(color: AppColors.surface, width: 2),
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      radius: 18,
+                      backgroundColor: _colors[i % _colors.length],
+                      child: Text(
+                        avatarLabels[i],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+            ],
           ),
+        ),
       ],
     );
   }

@@ -21,7 +21,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final _statusController = TextEditingController(text: 'In love');
+  final _statusController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _joinCodeController = TextEditingController();
@@ -31,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _isCreatingInvite = false;
   bool _isJoining = false;
   String _displayName = '';
+  String _originalStatus = '';
   String? _loadError;
 
   Map<String, dynamic>? _coupleRow; // null = not part of any couple yet
@@ -84,7 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     try {
       final profileRow = await client
           .from('profiles')
-          .select('name')
+          .select('name, status')
           .eq('id', user.id)
           .maybeSingle();
 
@@ -109,12 +110,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
 
       if (!mounted) return;
+      final status = (profileRow?['status'] as String?) ?? '';
       setState(() {
         _displayName = (profileRow?['name'] as String?)?.trim().isNotEmpty == true
             ? profileRow!['name'] as String
             : (user.email ?? 'You');
         _coupleRow = coupleRow;
         _partnerName = partnerName;
+        _originalStatus = status;
+        _statusController.text = status;
         _isLoading = false;
       });
     } catch (e) {
@@ -236,21 +240,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     final emailChanged = newEmail.isNotEmpty && newEmail != currentUser.email;
     final passwordChanged = newPassword.isNotEmpty;
+    final newStatus = _statusController.text.trim();
+    final statusChanged = newStatus != _originalStatus;
 
-    if (!emailChanged && !passwordChanged) return;
+    if (!emailChanged && !passwordChanged && !statusChanged) return;
 
     setState(() => _isSaving = true);
     try {
-      // Changing the email re-triggers Supabase's confirmation flow (a
-      // confirmation link goes to the NEW address before it takes
-      // effect) — same email-sending path as sign-up, so it's subject
-      // to the same rate limit if hit repeatedly.
-      await client.auth.updateUser(
-        UserAttributes(
-          email: emailChanged ? newEmail : null,
-          password: passwordChanged ? newPassword : null,
-        ),
-      );
+      if (emailChanged || passwordChanged) {
+        // Changing the email re-triggers Supabase's confirmation flow (a
+        // confirmation link goes to the NEW address before it takes
+        // effect) — same email-sending path as sign-up, so it's subject
+        // to the same rate limit if hit repeatedly.
+        await client.auth.updateUser(
+          UserAttributes(
+            email: emailChanged ? newEmail : null,
+            password: passwordChanged ? newPassword : null,
+          ),
+        );
+      }
+      if (statusChanged) {
+        await client.from('profiles').update({'status': newStatus}).eq('id', currentUser.id);
+        _originalStatus = newStatus;
+      }
       if (!mounted) return;
       _passwordController.clear();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -258,7 +270,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           content: Text(
             emailChanged
                 ? 'Check your new email to confirm the change.'
-                : 'Password updated.',
+                : (passwordChanged ? 'Password updated.' : 'Status updated.'),
           ),
         ),
       );

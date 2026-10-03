@@ -48,7 +48,10 @@ class _MainShellState extends State<MainShell> {
       body: IndexedStack(
         index: pageIndex,
         children: [
-          TodayScreen(key: ValueKey('today-$_refreshTick')),
+          TodayScreen(
+            key: ValueKey('today-$_refreshTick'),
+            onOpenSettings: () => setState(() => _navIndex = 3),
+          ),
           CoupleDatesScreen(key: ValueKey('dates-$_refreshTick')),
           SettingsScreen(),
         ],
