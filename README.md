@@ -11,9 +11,9 @@
 
 ## Screenshots
 
-| Create Account |
-| --- |
-| ![Create Account](docs/assets/screen-create-account.png) |
+| Login Screen | Create Account |
+| --- | --- |
+| ![Login](docs/assets/login-screen) | ![Create Account](docs/assets/create-account-screen) |
 
 
 
