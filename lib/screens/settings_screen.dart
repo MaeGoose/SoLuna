@@ -340,6 +340,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const SizedBox(height: AppSpacing.xs),
             Text('Waiting for them to join...', style: textTheme.labelSmall),
+            const SizedBox(height: AppSpacing.md),
           ] else ...[
             const Text("Not linked with a partner yet."),
             const SizedBox(height: AppSpacing.md),
@@ -349,27 +350,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onPressed: _isCreatingInvite ? null : _pickStartDateThenCreateInvite,
             ),
             const SizedBox(height: AppSpacing.md),
-            Row(
-              children: [
-                Expanded(
-                  child: LabeledTextField(
-                    label: 'Have a code?',
-                    controller: _joinCodeController,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                SizedBox(
-                  width: 90,
-                  height: 52,
-                  child: FilledButton(
-                    style: FilledButton.styleFrom(minimumSize: Size.zero),
-                    onPressed: _isJoining ? null : _joinWithCode,
-                    child: Text(_isJoining ? '...' : 'Join'),
-                  ),
-                ),
-              ],
-            ),
           ],
+          // Shown either way while unlinked: if you created a code AND
+          // your partner separately created their own, you still need a
+          // way to paste theirs in rather than just wait on yours.
+          Row(
+            children: [
+              Expanded(
+                child: LabeledTextField(
+                  label: 'Have a code?',
+                  controller: _joinCodeController,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              SizedBox(
+                width: 90,
+                height: 52,
+                child: FilledButton(
+                  style: FilledButton.styleFrom(minimumSize: Size.zero),
+                  onPressed: _isJoining ? null : _joinWithCode,
+                  child: Text(_isJoining ? '...' : 'Join'),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
