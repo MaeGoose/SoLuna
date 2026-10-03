@@ -85,7 +85,7 @@ I worked on the blueprint that Claude gave me, I know just had to adjust and cod
 - **File:** main.dart, app_colors.dart, app_scroll_behavior.dart, app_spacing.dart, app_theme.dart
 - **Commit:** https://github.com/MaeGoose/SoLuna/commit/2ce97798e3f5050bb1751363cb425273108b1329
 - **What it does and why it is built this way:** Main.dart obviously is the one that runs everything here, it has all the packages, device preview and leads to the other screens with the AuthEntryScreen being the first one to show It also is the main one that has the Supabase URL and its anonymous key basically in charge of its connection to Supabase. With regards however to the other themes screen, I basically was in charge of making these on how I deemed fit, the spacing, the theme I wanted it to have the colours, and the fonts I chose were mostly done by me. I only merely followed the layouts of our past activities. 
-- 
+
 ### The AI-written part I understand best
 
 - **File:** main.shell 
