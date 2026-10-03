@@ -13,7 +13,7 @@
 
 | Login Screen | Create Account |
 | --- | --- |
-| ![Login](docs/assets/login-screen) | ![Create Account](docs/assets/create-account-screen) |
+| ![Login](docs/assets/login-screen.PNG) | ![Create Account](docs/assets/create-account-screen.PNG) |
 
 
 
