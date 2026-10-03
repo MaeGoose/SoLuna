@@ -11,9 +11,9 @@
 
 ## Screenshots
 
-| Login Screen | Create Account |
-| --- | --- |
-| ![Login](docs/assets/login-screen.PNG) | ![Create Account](docs/assets/create-account-screen.PNG) |
+| Login Screen | Create Account | On This Day Screen | Dates Screen | Add Screen | Add Memory Screen | Add Date Screen | Settings Screen |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| ![Login](docs/assets/login-screen.PNG) | ![Create Account](docs/assets/create-account-screen.PNG) | ![On This Day Screen](docs/assets/on-this-day-screen.PNG) | ![Dates Screen](docs/assets/dates-screen.PNG) | ![Add Screen](docs/assets/add-screen.PNG) | ![Add Memory Screen](docs/assets/add-memory-screen.PNG) | ![Add Date Screen](docs/assets/add-date-screen.PNG) | ![Settings Screen](docs/assets/) |
 
 
 
