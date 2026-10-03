@@ -69,12 +69,12 @@ scores zero.
 - **What I did instead:** I fixed it with a minimum of width:90 and a minimumSize.
 - **Commit:** https://github.com/MaeGoose/SoLuna/commit/fe72c2199dbfec638c39328c543145b445ea9075
 
-### Case 3 - Saving the Status not working
+### Case 3 - Saving the Status not working and Dissapearing link button
 
-- **What it gave me:**  
-- **What was wrong with it:** 
-- **What I did instead:** 
-- **Commit:** 
+- **What it gave me:**  I asked to clean up most of the code if ever I messed up or added unnecessary code. It seems like my saving status function didnt work so I asked for it to be fixed.
+- **What was wrong with it:** It did fix it and cleaned up some of the code however, It did remove the link button for some reason.
+- **What I did instead:** I ended up fixing it on my own with some help from some peers. 
+- **Commit:** https://github.com/MaeGoose/SoLuna/commit/364b4cbb1c9b04f944be9e188465b74fb1d33793
 
 ## 3. Who wrote what
 
