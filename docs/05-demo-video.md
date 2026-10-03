@@ -1,8 +1,8 @@
 # Demo video
 
-**File:** `demo.mp4` in this folder, or the hosted link (see below)
+**File:** [Demo-Video](demo.mp4)
 
-**Gdrve:** (https://drive.google.com/drive/folders/1fwIQFovMHAkZmYNOUCfdLTOzCti0HOnl?usp=drive_link)
+**Gdrive:** (https://drive.google.com/drive/folders/1fwIQFovMHAkZmYNOUCfdLTOzCti0HOnl?usp=drive_link)
 
 **Length:** aim for 3 to 5 minutes
 
